@@ -1,0 +1,22 @@
+{
+  "name": "apex-scores",
+  "version": "1.0.0",
+  "description": "Multi-Sport Scorekeeper & Voice Assistant",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 3000",
+    "dev": "npx http-server -p 3000"
+  },
+  "keywords": [
+    "scorekeeper",
+    "scoreboard",
+    "sports",
+    "voice-announcement",
+    "web-speech"
+  ],
+  "author": "Antigravity",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

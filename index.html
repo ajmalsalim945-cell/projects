@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Scores - Multi-Sport Scorekeeper & Voice Assistant</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="A professional, responsive, and easy-to-use manual scorekeeper for Football, Cricket, Basketball, Volleyball, and Badminton featuring real-time Web Speech voice announcements.">
+  <meta name="keywords" content="scorekeeper, scoreboard, sport counter, football, cricket, basketball, volleyball, badminton, speech score, voice scorekeeper">
+  
+  <!-- Google Fonts - Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- AOS CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+</head>
+<body>
+  <!-- Ambient Flowing Background Blobs -->
+  <div class="bg-glow-blob blob-1"></div>
+  <div class="bg-glow-blob blob-2"></div>
+  <div class="bg-glow-blob blob-3"></div>
+
+  <!-- ==========================================
+       APP HEADER
+       ========================================== -->
+  <header class="app-header">
+    <div class="header-controls">
+      <!-- Back Button -->
+      <button id="header-back-btn" class="icon-btn" title="Back to Dashboard" style="display: none;">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      
+      <!-- Brand Logo & Title -->
+      <div id="app-brand" class="logo-container">
+        <div class="sport-icon-wrapper" style="width: 36px; height: 36px; margin: 0; background: transparent; border: none;">
+          <!-- Master Logo Icon (Combined Trophy Theme) -->
+          <svg viewBox="0 0 24 24" style="fill: var(--text-primary); width: 24px; height: 24px;">
+            <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v3c0 2.4 1.7 4.4 4 4.9V17c0 1.7 1.3 3 3 3h1v2h4v-2h1c1.7 0 3-1.3 3-3v-2.1c2.3-.5 4-2.5 4-4.9V7c0-1.1-.9-2-2-2zM5 10V7h2v3H5zm14 0h-2V7h2v3z"/>
+          </svg>
+        </div>
+        <span class="logo-text">APEX SCORES</span>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Voice Control Button -->
+      <button id="global-mic-btn" class="icon-btn mic-btn" title="Start Voice Control">
+        <svg viewBox="0 0 24 24" style="fill: currentColor; width: 1.25rem; height: 1.25rem;">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+        </svg>
+      </button>
+
+      <!-- Mute Button (Quick Toggle) -->
+      <button id="global-mute-btn" class="icon-btn" title="Mute Voice">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+      </button>
+
+      <!-- Theme Switcher -->
+      <button id="header-theme-btn" class="icon-btn" title="Toggle Theme">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+        </svg>
+      </button>
+
+      <!-- Voice Assistant Settings Gear -->
+      <button id="header-settings-btn" class="icon-btn" title="Voice Settings">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </button>
+
+      
+      <!-- Voice Settings Dropdown -->
+      <div id="voice-settings-dropdown" class="voice-settings-dropdown">
+        <h3>
+          <span>Speech Assistant</span>
+        </h3>
+        <div class="voice-setting-row">
+          <label for="voice-select">Announcement Voice</label>
+          <select id="voice-select"></select>
+        </div>
+        <div class="voice-setting-row">
+          <label for="recognition-lang-select">Voice Command Language</label>
+          <select id="recognition-lang-select">
+            <option value="en-US" selected>English (en-US)</option>
+            <option value="ml-IN">Malayalam (ml-IN)</option>
+          </select>
+        </div>
+        <div class="voice-setting-row">
+          <label for="voice-volume">Volume (<span id="voice-volume-val">1.0</span>)</label>
+          <input type="range" id="voice-volume" min="0" max="1" step="0.1" value="1.0">
+        </div>
+        <div class="voice-setting-row">
+          <label for="voice-rate">Speed (<span id="voice-rate-val">1.0</span>)</label>
+          <input type="range" id="voice-rate" min="0.5" max="2.0" step="0.1" value="1.0">
+        </div>
+        <div class="voice-setting-row">
+          <label for="voice-pitch">Pitch (<span id="voice-pitch-val">1.0</span>)</label>
+          <input type="range" id="voice-pitch" min="0.5" max="2.0" step="0.1" value="1.0">
+        </div>
+        <button id="panel-mute-btn" class="crick-btn" style="width: 100%; margin-top: 0.5rem; font-size: 0.85rem; padding: 0.6rem;">
+          Mute Voice Assistant
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    
+    <!-- ==========================================
+         DASHBOARD VIEW
+         ========================================== -->
+    <section id="view-home" class="sport-view active">
+      <div class="hero-section">
+        <h2>Professional Scorekeeper</h2>
+        <p>Select a sport to start keeping scores manually with voice announcements.</p>
+      </div>
+
+      <div class="sports-grid">
+        <!-- Football -->
+        <a class="sport-card" data-sport="football" id="card-football" data-aos="fade-up" data-aos-delay="100">
+          <div class="sport-icon-wrapper">
+            <!-- Football SVG -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.31 0-6-2.69-6-6 0-.32.03-.64.08-.95l3.29-1.9 2.1 3.64c.18.3.52.48.88.45l4.37-.38c.36-.03.68-.24.84-.56l1.23-2.45c.42.71.69 1.48.83 2.3L16 16.5c-.38.33-.5.87-.27 1.34l1.24 2.48c-1.39.95-3.08 1.51-4.97 1.61zM4.1 11.23c.31.25.72.33 1.09.2l3.41-1.14 1.47 2.54-2.88 1.66c-.34.19-.55.56-.55.95 0 .23.07.45.2.64l.87 1.3-3-1.73c-.73-1.63-1.07-3.41-.61-5.42zm15.8 2.54c-.16.32-.48.53-.84.56l-3.37.29-.98-1.7c-.18-.3-.52-.48-.88-.45l-3.41.3c-.36.03-.68.24-.84.56l-.88 1.76-1.57-2.72c-.18-.3-.15-.68.08-.95l2.63-3.07c.23-.27.59-.38.93-.29l3.66.98c.34.09.62.33.74.66l1.6 4.39 3.07 1.09z"/>
+            </svg>
+          </div>
+          <h3>Football</h3>
+          <p>Stopwatch, half configs, penalty shootout, and detailed match stats.</p>
+        </a>
+
+        <!-- Cricket -->
+        <a class="sport-card" data-sport="cricket" id="card-cricket" data-aos="fade-up" data-aos-delay="200">
+          <div class="sport-icon-wrapper">
+            <!-- Cricket SVG -->
+            <svg viewBox="0 0 24 24">
+              <path d="M18.5 2.5c-.6-.6-1.5-.6-2.1 0l-2.1 2.1c-.2.2-.3.5-.3.8 0 .3.1.6.3.8l.7.7-9.2 9.2c-.4.4-.7.9-.8 1.5l-.5 3.5c-.1.5.1 1 .5 1.4.4.4.9.6 1.4.5l3.5-.5c.6-.1 1.1-.4 1.5-.8l9.2-9.2.7.7c.4.4 1.2.4 1.6 0l2.1-2.1c.6-.6.6-1.5 0-2.1l-4.8-4.8zm-11 15.6c-.2.2-.4.3-.7.3l-1.5.2.2-1.5c0-.3.1-.5.3-.7l8.5-8.5 1.7 1.7-8.8 8.8z"/>
+              <circle cx="7.5" cy="7.5" r="3"/>
+            </svg>
+          </div>
+          <h3>Cricket</h3>
+          <p>Overs/wickets configuration, Free Hits, ball-by-ball logs, run rates.</p>
+        </a>
+
+        <!-- Basketball -->
+        <a class="sport-card" data-sport="basketball" id="card-basketball" data-aos="fade-up" data-aos-delay="300">
+          <div class="sport-icon-wrapper">
+            <!-- Basketball SVG -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 2c1.85 0 3.55.63 4.9 1.69L13.25 9.3c-.34-.41-.86-.67-1.44-.67-.58 0-1.1.26-1.44.67L6.72 5.69C8.07 4.63 9.77 4 12 4zM4.69 6.72l3.61 3.61c-.41.34-.67.86-.67 1.44 0 .09.02.18.04.27l-4.88.94c-.11-.79-.19-1.6-.19-2.4 0-1.04.22-2.02.59-2.92l1.5-1.54zm.8 6.94l4.88-.94c.1.37.3.7.57.96l-3.61 3.61-1.5-1.5c-.24-.59-.34-1.24-.34-2.13zm1.69 4.9l3.61-3.61c.34.41.86.67 1.44.67s1.1-.26 1.44-.67l3.61 3.61C15.55 19.37 13.85 20 12 20s-3.55-.63-4.9-1.69zm10.13-1.29l-3.61-3.61c.27-.26.47-.59.57-.96h4.88l-1.5 1.5c-.1.32-.2.53-.34.57zm2.19-4.81h-4.88c.02-.09.04-.18.04-.27 0-.58-.26-1.1-.67-1.44l3.61-3.61 1.5 1.5c.24.59.34 1.24.34 2.13v1.69zm-1.18-6.44l-3.61 3.61c-.34-.41-.86-.67-1.44-.67s-1.1.26-1.44.67l-3.61-3.61 1.5-1.5c.59-.24 1.24-.34 2.13-.34s1.54.1 2.13.34l1.5 1.5z"/>
+            </svg>
+          </div>
+          <h3>Basketball</h3>
+          <p>Quarter durations, shot clock (24s/14s), team fouls penalty BONUS alert.</p>
+        </a>
+
+        <!-- Volleyball -->
+        <a class="sport-card" data-sport="volleyball" id="card-volleyball" data-aos="fade-up" data-aos-delay="400">
+          <div class="sport-icon-wrapper">
+            <!-- Volleyball SVG -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm1-11.83v2.09c1.6.38 3 1.24 4 2.45L18.8 9.3c-1.39-1.68-3.46-2.74-5.8-3.13zm-2 0c-2.34.39-4.41 1.45-5.8 3.13L6.8 11.71c1-1.21 2.4-2.07 4-2.45V6.17zM5.1 13h2.09c.14.73.43 1.41.83 2L6.2 16.82C5.5 15.69 5.1 14.4 5.1 13zm11.7 3.82l-1.82-1.82c.4-.59.69-1.27.83-2H18.9c0 1.4-.4 2.69-1.1 3.82zm-6.91-1.29l1.41-1.41v2.83l-1.41-1.42z"/>
+            </svg>
+          </div>
+          <h3>Volleyball</h3>
+          <p>Custom set limit parameters, set tracker logging, court switch alerts.</p>
+        </a>
+
+        <!-- Badminton -->
+        <a class="sport-card" data-sport="badminton" id="card-badminton" data-aos="fade-up" data-aos-delay="500">
+          <div class="sport-icon-wrapper">
+            <!-- Badminton SVG -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2a1 1 0 0 0-.97.76l-3 12.5a1 1 0 0 0 .82 1.21c.05 0 .1 0 .15 0h6a1 1 0 0 0 .97-.76l-3-12.5A1 1 0 0 0 12 2zm-2.8 13L11.5 5h1l2.3 10h-5.6z"/>
+              <path d="M12 17.5c-1.93 0-3.5 1.12-3.5 2.5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1c0-1.38-1.57-2.5-3.5-2.5z"/>
+            </svg>
+          </div>
+          <h3>Badminton</h3>
+          <p>Singles/Doubles court boundaries, 11-point interval warning, cap rules.</p>
+        </a>
+      </div>
+
+      <!-- Global Activity Match Logs (Unified Feed) -->
+      <div class="timeline-panel" style="margin-top: 2.5rem; max-height: 450px;" data-aos="fade-up" data-aos-delay="600">
+        <div class="timeline-title">
+          <span>Live Match Feed (All Games)</span>
+          <button id="global-logs-clear" class="btn-control" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;">Clear Feed</button>
+        </div>
+        <div id="global-logs-container" class="timeline-logs">
+          <div style="text-align: center; color: var(--text-muted); padding: 3rem 0; font-size: 0.9rem;">
+            No match events recorded yet. Select a sport and start scoring to populate this feed!
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Rules Tutorials Grid -->
+      <div class="tutorials-section" data-aos="fade-up" data-aos-delay="700">
+        <div class="timeline-title">
+          <span>Game Rules Video Tutorials</span>
+        </div>
+        <div class="tutorials-grid">
+          <!-- Football -->
+          <div class="tutorial-card" data-video-id="qg566N-eDWo" data-sport-name="Football">
+            <div class="tutorial-card-preview" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.03)); border-color: rgba(16, 185, 129, 0.2);">
+              <div class="sport-icon-wrapper" style="width: 50px; height: 50px; margin: 0; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
+                <svg viewBox="0 0 24 24" style="fill: var(--color-football); width: 24px; height: 24px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.31 0-6-2.69-6-6 0-.32.03-.64.08-.95l3.29-1.9 2.1 3.64c.18.3.52.48.88.45l4.37-.38c.36-.03.68-.24.84-.56l1.23-2.45c.42.71.69 1.48.83 2.3L16 16.5c-.38.33-.5.87-.27 1.34l1.24 2.48c-1.39.95-3.08 1.51-4.97 1.61z"/></svg>
+              </div>
+              <div class="play-btn-glow">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="tutorial-card-info">
+              <h4>Football Rules</h4>
+              <p>Offsides, fouls, penalties, and basic scoring laws.</p>
+            </div>
+          </div>
+
+          <!-- Cricket -->
+          <div class="tutorial-card" data-video-id="ycK3LCbaVL8" data-sport-name="Cricket">
+            <div class="tutorial-card-preview" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.03)); border-color: rgba(245, 158, 11, 0.2);">
+              <div class="sport-icon-wrapper" style="width: 50px; height: 50px; margin: 0; background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3);">
+                <svg viewBox="0 0 24 24" style="fill: var(--color-cricket); width: 24px; height: 24px;">
+                  <path d="M18.5 2.5c-.6-.6-1.5-.6-2.1 0l-2.1 2.1c-.2.2-.3.5-.3.8 0 .3.1.6.3.8l.7.7-9.2 9.2c-.4.4-.7.9-.8 1.5l-.5 3.5c-.1.5.1 1 .5 1.4.4.4.9.6 1.4.5l3.5-.5c.6-.1 1.1-.4 1.5-.8l9.2-9.2.7.7c.4.4 1.2.4 1.6 0l2.1-2.1c.6-.6.6-1.5 0-2.1l-4.8-4.8zm-11 15.6c-.2.2-.4.3-.7.3l-1.5.2.2-1.5c0-.3.1-.5.3-.7l8.5-8.5 1.7 1.7-8.8 8.8z"/><circle cx="7.5" cy="7.5" r="3"/>
+                </svg>
+              </div>
+              <div class="play-btn-glow">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="tutorial-card-info">
+              <h4>Cricket Rules</h4>
+              <p>Runs, wickets, overs, and dismissal conditions.</p>
+            </div>
+          </div>
+
+          <!-- Basketball -->
+          <div class="tutorial-card" data-video-id="SBBvTI-cvik" data-sport-name="Basketball">
+            <div class="tutorial-card-preview" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(249, 115, 22, 0.03)); border-color: rgba(249, 115, 22, 0.2);">
+              <div class="sport-icon-wrapper" style="width: 50px; height: 50px; margin: 0; background: rgba(249, 115, 22, 0.1); border-color: rgba(249, 115, 22, 0.3);">
+                <svg viewBox="0 0 24 24" style="fill: var(--color-basketball); width: 24px; height: 24px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 2c1.85 0 3.55.63 4.9 1.69L13.25 9.3c-.34-.41-.86-.67-1.44-.67-.58 0-1.1.26-1.44.67L6.72 5.69C8.07 4.63 9.77 4 12 4z"/></svg>
+              </div>
+              <div class="play-btn-glow">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="tutorial-card-info">
+              <h4>Basketball Rules</h4>
+              <p>Fouls, shot clocks, time violations, and scoring points.</p>
+            </div>
+          </div>
+
+          <!-- Volleyball -->
+          <div class="tutorial-card" data-video-id="hLZ44KBWEbo" data-sport-name="Volleyball">
+            <div class="tutorial-card-preview" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.03)); border-color: rgba(59, 130, 246, 0.2);">
+              <div class="sport-icon-wrapper" style="width: 50px; height: 50px; margin: 0; background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3);">
+                <svg viewBox="0 0 24 24" style="fill: var(--color-volleyball); width: 24px; height: 24px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm1-11.83v2.09c1.6.38 3 1.24 4 2.45L18.8 9.3c-1.39-1.68-3.46-2.74-5.8-3.13zm-2 0c-2.34.39-4.41 1.45-5.8 3.13L6.8 11.71c1-1.21 2.4-2.07 4-2.45V6.17z"/></svg>
+              </div>
+              <div class="play-btn-glow">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="tutorial-card-info">
+              <h4>Volleyball Rules</h4>
+              <p>Set structures, rotation rules, and legal contacts.</p>
+            </div>
+          </div>
+
+          <!-- Badminton -->
+          <div class="tutorial-card" data-video-id="UyLIi-TbcFc" data-sport-name="Badminton">
+            <div class="tutorial-card-preview" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(236, 72, 153, 0.03)); border-color: rgba(236, 72, 153, 0.2);">
+              <div class="sport-icon-wrapper" style="width: 50px; height: 50px; margin: 0; background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3);">
+                <svg viewBox="0 0 24 24" style="fill: var(--color-badminton); width: 24px; height: 24px;"><path d="M12 2a1 1 0 0 0-.97.76l-3 12.5a1 1 0 0 0 .82 1.21c.05 0 .1 0 .15 0h6a1 1 0 0 0 .97-.76l-3-12.5A1 1 0 0 0 12 2zm-2.8 13L11.5 5h1l2.3 10h-5.6z"/><path d="M12 17.5c-1.93 0-3.5 1.12-3.5 2.5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1c0-1.38-1.57-2.5-3.5-2.5z"/></svg>
+              </div>
+              <div class="play-btn-glow">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="tutorial-card-info">
+              <h4>Badminton Rules</h4>
+              <p>Singles/doubles service courts and scoring limits.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTBALL VIEW
+         ========================================== -->
+    <section id="view-football" class="sport-view" data-sport="football">
+      <div class="sport-view-header">
+        <div class="sport-title-area">
+          <div class="sport-icon-wrapper" style="width: 44px; height: 44px; margin: 0;">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.31 0-6-2.69-6-6 0-.32.03-.64.08-.95l3.29-1.9 2.1 3.64c.18.3.52.48.88.45l4.37-.38c.36-.03.68-.24.84-.56l1.23-2.45c.42.71.69 1.48.83 2.3L16 16.5c-.38.33-.5.87-.27 1.34l1.24 2.48c-1.39.95-3.08 1.51-4.97 1.61z"/></svg>
+          </div>
+          <h2>Football</h2>
+          <button class="icon-btn tutorial-help-btn" data-video-id="qg566N-eDWo" data-sport-name="Football" title="Watch Football Rules Video">
+            <svg viewBox="0 0 24 24" style="fill: currentColor; width: 1.25rem; height: 1.25rem;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+          </button>
+        </div>
+        
+        <!-- Rules Config -->
+        <div style="display: flex; gap: 0.5rem; align-items: center; background: rgba(255, 255, 255, 0.03); padding: 0.4rem 0.8rem; border-radius: 99px; font-size: 0.8rem;">
+          <span class="stat-title">Half duration:</span>
+          <select id="fb-config-half" style="background:transparent; border:none; color:var(--text-primary); font-weight:bold; outline:none; cursor:pointer;">
+            <option value="5">5 Min</option>
+            <option value="10">10 Min</option>
+            <option value="20">20 Min</option>
+            <option value="40">40 Min</option>
+            <option value="45" selected>45 Min</option>
+          </select>
+        </div>
+
+        <div class="timer-container">
+          <div id="fb-clock" class="game-clock">00:00</div>
+          <div class="timer-controls">
+            <button id="fb-clock-toggle" class="btn-control">Start Clock</button>
+            <span id="fb-period" class="half-indicator" title="Click to Change Period">1st Half</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-grid">
+        <div class="scoreboard-panel">
+          
+          <!-- Penalty Shootout Section (Hidden by default) -->
+          <div id="fb-shootout-panel" style="display: none; margin-bottom: 1.5rem; padding: 1rem; border-radius: 1rem; border: 1px solid var(--card-border); background: rgba(0,0,0,0.2);">
+            <h3 style="font-size: 1rem; text-align: center; margin-bottom: 0.75rem; color: var(--color-football); text-transform: uppercase; letter-spacing: 0.05em;">Penalty Shootout</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+              <div>
+                <h4 style="font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--text-secondary);">Team A Penalties:</h4>
+                <div id="fb-shootout-a" style="display: flex; gap: 0.5rem; flex-wrap: wrap;"></div>
+              </div>
+              <div style="border-left: 1px solid var(--card-border); padding-left: 1.5rem;">
+                <h4 style="font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--text-secondary);">Team B Penalties:</h4>
+                <div id="fb-shootout-b" style="display: flex; gap: 0.5rem; flex-wrap: wrap;"></div>
+              </div>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.75rem;">Click index circles to toggle: Scored (✅) -> Missed (❌) -> Empty</p>
+          </div>
+
+          <div class="score-display-wrapper">
+            <!-- Team A -->
+            <div class="team-score-card">
+              <input type="text" id="fb-name-a" class="team-name-input" value="Team A">
+              <div id="fb-score-a" class="big-digit-box">0</div>
+              <div class="points-btn-group">
+                <button id="fb-score-a-dec" class="points-btn">-</button>
+                <button id="fb-score-a-inc" class="points-btn">+</button>
+              </div>
+            </div>
+
+            <span class="score-divider">:</span>
+
+            <!-- Team B -->
+            <div class="team-score-card">
+              <input type="text" id="fb-name-b" class="team-name-input" value="Team B">
+              <div id="fb-score-b" class="big-digit-box">0</div>
+              <div class="points-btn-group">
+                <button id="fb-score-b-dec" class="points-btn">-</button>
+                <button id="fb-score-b-inc" class="points-btn">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Football Stats grid -->
+          <div class="football-details-grid">
+            <!-- Yellow/Red Cards -->
+            <div class="stat-controller">
+              <span class="stat-title">Yellow / Red</span>
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div style="text-align: center;">
+                  <div class="stat-val"><span class="card-badge yellow"></span> <span id="fb-yellow-a">0</span></div>
+                  <div class="stat-buttons">
+                    <button id="fb-yellow-a-dec" class="stat-btn-small">-</button>
+                    <button id="fb-yellow-a-inc" class="stat-btn-small">+</button>
+                  </div>
+                </div>
+                <div style="border-left: 1px solid var(--card-border); padding-left: 1rem; text-align: center;">
+                  <div class="stat-val"><span class="card-badge red"></span> <span id="fb-red-a">0</span></div>
+                  <div class="stat-buttons">
+                    <button id="fb-red-a-dec" class="stat-btn-small">-</button>
+                    <button id="fb-red-a-inc" class="stat-btn-small">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Corners -->
+            <div class="stat-controller">
+              <span class="stat-title">Corners</span>
+              <div class="stat-val" id="fb-corners-a">0</div>
+              <div class="stat-buttons">
+                <button id="fb-corners-a-dec" class="stat-btn-small">-</button>
+                <button id="fb-corners-a-inc" class="stat-btn-small">+</button>
+              </div>
+            </div>
+            <!-- Fouls / Offsides -->
+            <div class="stat-controller">
+              <span class="stat-title">Fouls / Offsides</span>
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div style="text-align: center;">
+                  <div class="stat-val" id="fb-fouls-a">0</div>
+                  <div class="stat-buttons">
+                    <button id="fb-fouls-a-dec" class="stat-btn-small">-</button>
+                    <button id="fb-fouls-a-inc" class="stat-btn-small">+</button>
+                  </div>
+                </div>
+                <div style="border-left: 1px solid var(--card-border); padding-left: 1rem; text-align: center;">
+                  <div class="stat-val" id="fb-offsides-a">0</div>
+                  <div class="stat-buttons">
+                    <button id="fb-offsides-a-dec" class="stat-btn-small">-</button>
+                    <button id="fb-offsides-a-inc" class="stat-btn-small">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Football Stats grid for Team B -->
+          <div class="football-details-grid" style="margin-top: 1rem; border-top: none; padding-top: 0;">
+            <!-- Yellow/Red Cards -->
+            <div class="stat-controller">
+              <span class="stat-title">Yellow / Red</span>
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div style="text-align: center;">
+                  <div class="stat-val"><span class="card-badge yellow"></span> <span id="fb-yellow-b">0</span></div>
+                  <div class="stat-buttons">
+                    <button id="fb-yellow-b-dec" class="stat-btn-small">-</button>
+                    <button id="fb-yellow-b-inc" class="stat-btn-small">+</button>
+                  </div>
+                </div>
+                <div style="border-left: 1px solid var(--card-border); padding-left: 1rem; text-align: center;">
+                  <div class="stat-val"><span class="card-badge red"></span> <span id="fb-red-b">0</span></div>
+                  <div class="stat-buttons">
+                    <button id="fb-red-b-dec" class="stat-btn-small">-</button>
+                    <button id="fb-red-b-inc" class="stat-btn-small">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Corners -->
+            <div class="stat-controller">
+              <span class="stat-title">Corners</span>
+              <div class="stat-val" id="fb-corners-b">0</div>
+              <div class="stat-buttons">
+                <button id="fb-corners-b-dec" class="stat-btn-small">-</button>
+                <button id="fb-corners-b-inc" class="stat-btn-small">+</button>
+              </div>
+            </div>
+            <!-- Fouls / Offsides -->
+            <div class="stat-controller">
+              <span class="stat-title">Fouls / Offsides</span>
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div style="text-align: center;">
+                  <div class="stat-val" id="fb-fouls-b">0</div>
+                  <div class="stat-buttons">
+                    <button id="fb-fouls-b-dec" class="stat-btn-small">-</button>
+                    <button id="fb-fouls-b-inc" class="stat-btn-small">+</button>
+                  </div>
+                </div>
+                <div style="border-left: 1px solid var(--card-border); padding-left: 1rem; text-align: center;">
+                  <div class="stat-val" id="fb-offsides-b">0</div>
+                  <div class="stat-buttons">
+                    <button id="fb-offsides-b-dec" class="stat-btn-small">-</button>
+                    <button id="fb-offsides-b-inc" class="stat-btn-small">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="global-match-controls">
+            <button id="fb-undo" class="btn-control">Undo</button>
+            <button id="fb-reset" class="btn-control btn-danger" style="background: var(--color-danger); border-color: transparent;">Reset Match</button>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-panel">
+          <div class="timeline-title">
+            <span>Match Timeline</span>
+          </div>
+          <div id="fb-logs" class="timeline-logs">
+            <div class="log-item football">
+              <span>Match initialized</span>
+              <span class="time-tag">00:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         CRICKET VIEW
+         ========================================== -->
+    <section id="view-cricket" class="sport-view" data-sport="cricket">
+      <div class="sport-view-header">
+        <div class="sport-title-area">
+          <div class="sport-icon-wrapper" style="width: 44px; height: 44px; margin: 0;">
+            <svg viewBox="0 0 24 24">
+              <path d="M18.5 2.5c-.6-.6-1.5-.6-2.1 0l-2.1 2.1c-.2.2-.3.5-.3.8 0 .3.1.6.3.8l.7.7-9.2 9.2c-.4.4-.7.9-.8 1.5l-.5 3.5c-.1.5.1 1 .5 1.4.4.4.9.6 1.4.5l3.5-.5c.6-.1 1.1-.4 1.5-.8l9.2-9.2.7.7c.4.4 1.2.4 1.6 0l2.1-2.1c.6-.6.6-1.5 0-2.1l-4.8-4.8zm-11 15.6c-.2.2-.4.3-.7.3l-1.5.2.2-1.5c0-.3.1-.5.3-.7l8.5-8.5 1.7 1.7-8.8 8.8z"/>
+              <circle cx="7.5" cy="7.5" r="3"/>
+            </svg>
+          </div>
+          <h2>Cricket Scorecard</h2>
+          <button class="icon-btn tutorial-help-btn" data-video-id="ycK3LCbaVL8" data-sport-name="Cricket" title="Watch Cricket Rules Video">
+            <svg viewBox="0 0 24 24" style="fill: currentColor; width: 1.25rem; height: 1.25rem;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+          </button>
+        </div>
+        
+        <!-- Rules Config -->
+        <div style="display: flex; gap: 0.75rem; align-items: center; background: rgba(255, 255, 255, 0.03); padding: 0.4rem 0.8rem; border-radius: 99px; font-size: 0.8rem;">
+          <span class="stat-title">Overs:</span>
+          <select id="crick-config-overs" style="background:transparent; border:none; color:var(--text-primary); font-weight:bold; outline:none; cursor:pointer;">
+            <option value="5">5 Overs</option>
+            <option value="10">10 Overs</option>
+            <option value="20" selected>20 Overs</option>
+            <option value="50">50 Overs</option>
+          </select>
+          <span class="stat-title" style="border-left: 1px solid var(--card-border); padding-left: 0.75rem;">Max Wkts:</span>
+          <select id="crick-config-wickets" style="background:transparent; border:none; color:var(--text-primary); font-weight:bold; outline:none; cursor:pointer;">
+            <option value="5">5 Wkts</option>
+            <option value="10" selected>10 Wkts</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <input type="text" id="crick-name-a" class="team-name-input" style="font-size: 0.9rem; border: 1px solid var(--card-border); padding: 0.4rem; border-radius: 0.5rem; width: 100px;" value="Team A">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">vs</span>
+          <input type="text" id="crick-name-b" class="team-name-input" style="font-size: 0.9rem; border: 1px solid var(--card-border); padding: 0.4rem; border-radius: 0.5rem; width: 100px;" value="Team B">
+        </div>
+      </div>
+
+      <div class="game-grid">
+        <div class="scoreboard-panel">
+          <div class="cricket-scoreboard">
+            
+            <!-- Cricket Free Hit Banner (Hidden by default) -->
+            <div id="crick-freehit-banner" class="match-status-alert active" style="display: none; background: rgba(245, 158, 11, 0.15); border-color: var(--color-cricket); color: #fbbf24; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; font-weight: 800;">
+              ⚡ FREE HIT! Batsman cannot be dismissed this ball (except Run Out).
+            </div>
+
+            <!-- Target Run Info (Chasing Innings only) -->
+            <div id="crick-target-bar" class="cricket-target-bar" style="display: none;"></div>
+
+            <div class="cricket-main-row">
+              <div class="cricket-score-title">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span id="crick-batting-team" class="cricket-team-name">Team A</span>
+                  <span id="crick-innings" class="half-indicator" style="cursor: pointer; font-size: 0.75rem;" title="Click to Switch Innings">Innings 1</span>
+                </div>
+                <div class="cricket-score-digits">
+                  <span id="crick-runs">0</span><span class="wickets">/<span id="crick-wickets">0</span> <span style="font-size: 1.25rem; color: var(--text-muted); font-weight: 500;">max <span id="crick-max-wickets">10</span></span></span>
+                </div>
+              </div>
+
+              <div class="cricket-overs-display">
+                <span class="stat-title">Overs bowled</span>
+                <div id="crick-overs" class="cricket-overs-val">0.0</div>
+                <div class="cricket-secondary-stats">
+                  <span>Run Rate: <strong id="crick-rr">0.00</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Over Ball Logs -->
+            <div class="current-over-section">
+              <span class="stat-title" style="min-width: 80px;">This Over:</span>
+              <div id="crick-balls-list" class="over-balls-list"></div>
+            </div>
+
+            <!-- Scoring Controls -->
+            <div class="cricket-action-board">
+              <button id="crick-btn-0" class="crick-btn run-btn">Dot Ball (0)</button>
+              <button id="crick-btn-1" class="crick-btn run-btn">+1 Run</button>
+              <button id="crick-btn-2" class="crick-btn run-btn">+2 Runs</button>
+              <button id="crick-btn-3" class="crick-btn run-btn">+3 Runs</button>
+              <button id="crick-btn-4" class="crick-btn boundary-btn">FOUR (4)</button>
+              <button id="crick-btn-6" class="crick-btn boundary-btn">SIX (6)</button>
+              <button id="crick-btn-wd" class="crick-btn">Wide (+1)</button>
+              <button id="crick-btn-nb" class="crick-btn">No Ball (+1)</button>
+              <button id="crick-btn-lb" class="crick-btn">Leg Bye</button>
+              <button id="crick-btn-b" class="crick-btn">Bye</button>
+              
+              <button id="crick-btn-out" class="crick-btn out-btn">WICKET (OUT)</button>
+            </div>
+          </div>
+
+          <div class="global-match-controls">
+            <button id="crick-undo" class="btn-control">Undo Ball</button>
+            <button id="crick-reset" class="btn-control btn-danger" style="background: var(--color-danger); border-color: transparent;">Reset Scorecard</button>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-panel">
+          <div class="timeline-title">
+            <span>Innings Log</span>
+          </div>
+          <div id="crick-logs" class="timeline-logs">
+            <div class="log-item cricket">
+              <span>Innings started</span>
+              <span class="time-tag">Over 0.0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wicket Popup Modal -->
+      <div id="crick-wicket-modal-backdrop" class="wicket-modal-backdrop">
+        <div class="wicket-modal">
+          <h3 style="text-align: center; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem; color: var(--color-danger);">Dismissal Type</h3>
+          <div id="crick-wicket-types-grid" class="wicket-types-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BASKETBALL VIEW
+         ========================================== -->
+    <section id="view-basketball" class="sport-view" data-sport="basketball">
+      <div class="sport-view-header">
+        <div class="sport-title-area">
+          <div class="sport-icon-wrapper" style="width: 44px; height: 44px; margin: 0;">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 2c1.85 0 3.55.63 4.9 1.69L13.25 9.3c-.34-.41-.86-.67-1.44-.67-.58 0-1.1.26-1.44.67L6.72 5.69C8.07 4.63 9.77 4 12 4z"/></svg>
+          </div>
+          <h2>Basketball</h2>
+          <button class="icon-btn tutorial-help-btn" data-video-id="SBBvTI-cvik" data-sport-name="Basketball" title="Watch Basketball Rules Video">
+            <svg viewBox="0 0 24 24" style="fill: currentColor; width: 1.25rem; height: 1.25rem;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+          </button>
+        </div>
+
+        <!-- Rules Config -->
+        <div style="display: flex; gap: 0.75rem; align-items: center; background: rgba(255, 255, 255, 0.03); padding: 0.4rem 0.8rem; border-radius: 99px; font-size: 0.8rem;">
+          <span class="stat-title">Quarter:</span>
+          <select id="bball-config-time" style="background:transparent; border:none; color:var(--text-primary); font-weight:bold; outline:none; cursor:pointer;">
+            <option value="8">8 Min</option>
+            <option value="10" selected>10 Min</option>
+            <option value="12">12 Min</option>
+          </select>
+          <span class="stat-title" style="border-left: 1px solid var(--card-border); padding-left: 0.75rem;">Fouls Limit:</span>
+          <select id="bball-config-fouls" style="background:transparent; border:none; color:var(--text-primary); font-weight:bold; outline:none; cursor:pointer;">
+            <option value="4">4 Fouls</option>
+            <option value="5" selected>5 Fouls</option>
+          </select>
+        </div>
+        
+        <!-- Basketball Timer Row -->
+        <div class="timer-container">
+          <div id="bball-clock" class="game-clock bball-timer-text" title="Click to Edit Clock">10:00</div>
+          <div class="timer-controls">
+            <button id="bball-clock-toggle" class="btn-control">Start Clock</button>
+            <span id="bball-quarter" class="half-indicator" title="Click to Change Quarter">1st Q</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-grid">
+        <div class="scoreboard-panel">
+          <!-- Shot clock & possession -->
+          <div class="bball-clocks-row">
+            <div class="shot-clock-container">
+              <span class="stat-title">Shot Clock</span>
+              <div id="bball-shot-clock" class="shot-clock-display">24</div>
+              <div class="timer-controls" style="margin-top: 0.5rem;">
+                <button id="bball-reset-24" class="btn-control" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;">Reset 24s</button>
+                <button id="bball-reset-14" class="btn-control" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;">Reset 14s</button>
+              </div>
+            </div>
+
+            <!-- Possession -->
+            <div id="bball-possession" class="shot-clock-container" style="cursor: pointer;" title="Toggle Possession Arrow">
+              <span class="stat-title">Possession</span>
+              <div class="possession-container">
+                <span id="bball-arrow-home" class="possession-arrow">◄ HOME</span>
+                <span id="bball-arrow-away" class="possession-arrow">AWAY ►</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="score-display-wrapper">
+            <!-- Home -->
+            <div class="team-score-card">
+              <input type="text" id="bball-name-home" class="team-name-input" value="Home">
+              <div id="bball-score-home" class="big-digit-box">0</div>
+            </div>
+
+            <span class="score-divider">:</span>
+
+            <!-- Away -->
+            <div class="team-score-card">
+              <input type="text" id="bball-name-away" class="team-name-input" value="Away">
+              <div id="bball-score-away" class="big-digit-box">0</div>
+            </div>
+          </div>
+
+          <!-- Controls for Basketball points & fouls -->
+          <div class="bball-controls-panel">
+            <!-- Home team controls -->
+            <div class="bball-team-panel">
+              <div class="bball-btn-grid">
+                <button id="bball-home-free" class="bball-btn">+1 FT</button>
+                <button id="bball-home-2pt" class="bball-btn">+2 FG</button>
+                <button id="bball-home-3pt" class="bball-btn">+3 PT</button>
+              </div>
+              <button id="bball-home-dec" class="crick-btn" style="width: 100%; font-size: 0.8rem; padding: 0.4rem;">Subtract Point (-1)</button>
+              
+              <div class="bball-team-stats">
+                <div class="bball-stat-box">
+                  <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span style="font-size:0.8rem;">Fouls: <strong id="bball-fouls-home">0</strong></span>
+                    <span id="bball-bonus-home" style="display:none; color:var(--color-danger); font-size:0.65rem; font-weight:800; animation:pulse 0.8s infinite alternate;">⚠️ BONUS</span>
+                  </div>
+                  <span id="bball-fouls-home-dec" class="bball-stat-control">-</span>
+                  <span id="bball-fouls-home-inc" class="bball-stat-control">+</span>
+                </div>
+                <div class="bball-stat-box">
+                  <span>T.O: <strong id="bball-timeouts-home">7</strong></span>
+                  <span id="bball-timeouts-home-dec" class="bball-stat-control">-</span>
+                  <span id="bball-timeouts-home-inc" class="bball-stat-control">+</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Away team controls -->
+            <div class="bball-team-panel">
+              <div class="bball-btn-grid">
+                <button id="bball-away-free" class="bball-btn">+1 FT</button>
+                <button id="bball-away-2pt" class="bball-btn">+2 FG</button>
+                <button id="bball-away-3pt" class="bball-btn">+3 PT</button>
+              </div>
+              <button id="bball-away-dec" class="crick-btn" style="width: 100%; font-size: 0.8rem; padding: 0.4rem;">Subtract Point (-1)</button>
+
+              <div class="bball-team-stats">
+                <div class="bball-stat-box">
+                  <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span style="font-size:0.8rem;">Fouls: <strong id="bball-fouls-away">0</strong></span>
+                    <span id="bball-bonus-away" style="display:none; color:var(--color-danger); font-size:0.65rem; font-weight:800; animation:pulse 0.8s infinite alternate;">⚠️ BONUS</span>
+                  </div>
+                  <span id="bball-fouls-away-dec" class="bball-stat-control">-</span>
+                  <span id="bball-fouls-away-inc" class="bball-stat-control">+</span>
+                </div>
+                <div class="bball-stat-box">
+                  <span>T.O: <strong id="bball-timeouts-away">7</strong></span>
+                  <span id="bball-timeouts-away-dec" class="bball-stat-control">-</span>
+                  <span id="bball-timeouts-away-inc" class="bball-stat-control">+</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="global-match-controls">
+            <button id="bball-undo" class="btn-control">Undo</button>
+            <button id="bball-reset" class="btn-control btn-danger" style="background: var(--color-danger); border-color: transparent;">Reset Scoreboard</button>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-panel">
+          <div class="timeline-title">
+            <span>Game Events</span>
+          </div>
+          <div id="bball-logs" class="timeline-logs">
+            <div class="log-item basketball">
+              <span>Game initialized</span>
+              <span class="time-tag">1st Q - 10:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VOLLEYBALL VIEW
+         ========================================== -->
+    <section id="view-volleyball" class="sport-view" data-sport="volleyball">
+      <div class="sport-view-header">
+        <div class="sport-title-area">
+          <div class="sport-icon-wrapper" style="width: 44px; height: 44px; margin: 0;">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm1-11.83v2.09c1.6.38 3 1.24 4 2.45L18.8 9.3c-1.39-1.68-3.46-2.74-5.8-3.13zm-2 0c-2.34.39-4.41 1.45-5.8 3.13L6.8 11.71c1-1.21 2.4-2.07 4-2.45V6.17zM5.1 13h2.09c.14.73.43 1.41.83 2L6.2 16.82C5.5 15.69 5.1 14.4 5.1 13zm11.7 3.82l-1.82-1.82c.4-.59.69-1.27.83-2H18.9c0 1.4-.4 2.69-1.1 3.82zm-6.91-1.29l1.41-1.41v2.83l-1.41-1.42z"/></svg>
+          </div>
+          <h2>Volleyball Match</h2>
+          <button class="icon-btn tutorial-help-btn" data-video-id="hLZ44KBWEbo" data-sport-name="Volleyball" title="Watch Volleyball Rules Video">
+            <svg viewBox="0 0 24 24" style="fill: currentColor; width: 1.25rem; height: 1.25rem;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+          </button>
+        </div>
+        
+        <!-- Rules Config -->
+        <div style="display: flex; gap: 0.75rem; align-items: center; background: rgba(255, 255, 255, 0.03); padding: 0.4rem 0.8rem; border-radius: 99px; font-size: 0.8rem;">
+          <span class="stat-title">Set Limit:</span>
+          <select id="vb-config-limit" style="background:transparent; border:none; color:var(--text-primary); font-weight:bold; outline:none; cursor:pointer;">
+            <option value="15">15 Pts</option>
+            <option value="21">21 Pts</option>
+            <option value="25" selected>25 Pts</option>
+          </select>
+          <span class="stat-title" style="border-left: 1px solid var(--card-border); padding-left: 0.75rem;">Decider limit:</span>
+          <select id="vb-config-decider" style="background:transparent; border:none; color:var(--text-primary); font-weight:bold; outline:none; cursor:pointer;">
+            <option value="11">11 Pts</option>
+            <option value="15" selected>15 Pts</option>
+            <option value="21">21 Pts</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <span class="stat-title">Format:</span>
+          <button id="vb-format-3" class="btn-control" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;">Best of 3</button>
+          <button id="vb-format-5" class="btn-control" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;">Best of 5</button>
+        </div>
+      </div>
+
+      <div class="game-grid">
+        <div class="scoreboard-panel">
+          
+          <!-- Switch Sides Warning Banner (Hidden by default) -->
+          <div id="vb-switch-sides-banner" class="match-status-alert active" style="display: none; background: rgba(59, 130, 246, 0.15); border-color: var(--color-volleyball); color: #60a5fa; cursor: pointer; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase;">
+            🔄 Switch Sides! Court rotation required. Click to Dismiss.
+          </div>
+
+          <!-- Active sets visual list -->
+          <div id="vb-sets-trackers" class="sets-grid-tracker"></div>
+
+          <div class="score-display-wrapper">
+            <!-- Team A -->
+            <div class="team-score-card">
+              <input type="text" id="vb-name-a" class="team-name-input" value="Team A">
+              <div id="vb-score-a" class="big-digit-box">0</div>
+              
+              <div class="points-btn-group">
+                <button id="vb-score-a-dec" class="points-btn">-</button>
+                <button id="vb-score-a-inc" class="points-btn">+</button>
+              </div>
+
+              <!-- Sets won / Serving -->
+              <div class="volleyball-details-row">
+                <span style="font-size: 0.85rem;">Sets Won: <strong id="vb-sets-a" style="color: var(--color-volleyball);">0</strong></span>
+                <div id="vb-server-a" class="vball-server-indicator active" title="Click to Set Serve">
+                  <span class="vball-server-dot"></span>
+                  <span>Serving</span>
+                </div>
+              </div>
+            </div>
+
+            <span class="score-divider">:</span>
+
+            <!-- Team B -->
+            <div class="team-score-card">
+              <input type="text" id="vb-name-b" class="team-name-input" value="Team B">
+              <div id="vb-score-b" class="big-digit-box">0</div>
+              
+              <div class="points-btn-group">
+                <button id="vb-score-b-dec" class="points-btn">-</button>
+                <button id="vb-score-b-inc" class="points-btn">+</button>
+              </div>
+
+              <!-- Sets won / Serving -->
+              <div class="volleyball-details-row">
+                <span style="font-size: 0.85rem;">Sets Won: <strong id="vb-sets-b" style="color: var(--color-volleyball);">0</strong></span>
+                <div id="vb-server-b" class="vball-server-indicator" title="Click to Set Serve">
+                  <span class="vball-server-dot"></span>
+                  <span>Serving</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="global-match-controls">
+            <button id="vb-undo" class="btn-control">Undo</button>
+            <button id="vb-reset" class="btn-control btn-danger" style="background: var(--color-danger); border-color: transparent;">Reset Match</button>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-panel">
+          <div class="timeline-title">
+            <span>Rally Log</span>
+          </div>
+          <div id="vb-logs" class="timeline-logs">
+            <div class="log-item volleyball">
+              <span>Match initialized</span>
+              <span class="time-tag">Set 1 (0-0)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BADMINTON VIEW
+         ========================================== -->
+    <section id="view-badminton" class="sport-view" data-sport="badminton">
+      <div class="sport-view-header">
+        <div class="sport-title-area">
+          <div class="sport-icon-wrapper" style="width: 44px; height: 44px; margin: 0;">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2a1 1 0 0 0-.97.76l-3 12.5a1 1 0 0 0 .82 1.21c.05 0 .1 0 .15 0h6a1 1 0 0 0 .97-.76l-3-12.5A1 1 0 0 0 12 2zm-2.8 13L11.5 5h1l2.3 10h-5.6z"/>
+              <path d="M12 17.5c-1.93 0-3.5 1.12-3.5 2.5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1c0-1.38-1.57-2.5-3.5-2.5z"/>
+            </svg>
+          </div>
+          <h2>Badminton Match</h2>
+          <button class="icon-btn tutorial-help-btn" data-video-id="UyLIi-TbcFc" data-sport-name="Badminton" title="Watch Badminton Rules Video">
+            <svg viewBox="0 0 24 24" style="fill: currentColor; width: 1.25rem; height: 1.25rem;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+          </button>
+        </div>
+
+        <!-- Rules Config -->
+        <div style="display: flex; gap: 0.75rem; align-items: center; background: rgba(255, 255, 255, 0.03); padding: 0.4rem 0.8rem; border-radius: 99px; font-size: 0.8rem;">
+          <span class="stat-title">Court style:</span>
+          <button id="bm-type-singles" class="btn-control" style="padding:0.25rem 0.6rem; font-size:0.75rem; margin:0;">Singles</button>
+          <button id="bm-type-doubles" class="btn-control" style="padding:0.25rem 0.6rem; font-size:0.75rem; margin:0;">Doubles</button>
+          
+          <span class="stat-title" style="border-left: 1px solid var(--card-border); padding-left: 0.75rem;">Limit:</span>
+          <select id="bm-config-limit" style="background:transparent; border:none; color:var(--text-primary); font-weight:bold; outline:none; cursor:pointer;">
+            <option value="11">11 Pts</option>
+            <option value="15">15 Pts</option>
+            <option value="21" selected>21 Pts</option>
+          </select>
+        </div>
+
+        <div style="font-size: 0.9rem; color: var(--text-secondary);" id="bm-games-tracker">
+          Game 1 | No games completed
+        </div>
+      </div>
+
+      <div class="game-grid">
+        <div class="scoreboard-panel">
+          
+          <!-- Interval Break Banner (Hidden by default) -->
+          <div id="bm-interval-banner" class="match-status-alert active" style="display: none; background: rgba(236, 72, 153, 0.15); border-color: var(--color-badminton); color: #f472b6; cursor: pointer; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase;">
+            ⏳ Game Interval! Take a 60-second break. Click to Dismiss.
+          </div>
+
+          <!-- Badminton Court Visualizer -->
+          <div class="badmin-court-visualizer">
+            <!-- Side A (Left side of screen) -->
+            <div class="badmin-court-half left-side">
+              <div id="court-a-left" class="badmin-box-quad">A Left (Odd)</div>
+              <div id="court-a-right" class="badmin-box-quad serving-court">A Right (Even)</div>
+            </div>
+            <!-- Side B (Right side of screen) -->
+            <div class="badmin-court-half right-side">
+              <div id="court-b-left" class="badmin-box-quad">B Left (Odd)</div>
+              <div id="court-b-right" class="badmin-box-quad receiver-court">B Right (Even)</div>
+            </div>
+          </div>
+
+          <div class="score-display-wrapper">
+            <!-- Player A -->
+            <div class="team-score-card">
+              <input type="text" id="bm-name-a" class="team-name-input" value="Player A">
+              <div id="bm-score-a" class="big-digit-box">0</div>
+              
+              <div class="points-btn-group">
+                <button id="bm-score-a-dec" class="points-btn">-</button>
+                <button id="bm-score-a-inc" class="points-btn">+</button>
+              </div>
+
+              <!-- Games won / Serving status -->
+              <div class="volleyball-details-row">
+                <span style="font-size: 0.85rem;">Games: <strong id="bm-games-a" style="color: var(--color-badminton);">0</strong></span>
+                <span id="bm-server-label-a" class="vball-server-indicator active" style="cursor: pointer;">🏸 Serving</span>
+              </div>
+            </div>
+
+            <span class="score-divider">:</span>
+
+            <!-- Player B -->
+            <div class="team-score-card">
+              <input type="text" id="bm-name-b" class="team-name-input" value="Player B">
+              <div id="bm-score-b" class="big-digit-box">0</div>
+              
+              <div class="points-btn-group">
+                <button id="bm-score-b-dec" class="points-btn">-</button>
+                <button id="bm-score-b-inc" class="points-btn">+</button>
+              </div>
+
+              <!-- Games won / Serving status -->
+              <div class="volleyball-details-row">
+                <span style="font-size: 0.85rem;">Games: <strong id="bm-games-b" style="color: var(--color-badminton);">0</strong></span>
+                <span id="bm-server-label-b" class="vball-server-indicator" style="cursor: pointer;">Receiving</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="global-match-controls">
+            <button id="bm-undo" class="btn-control">Undo</button>
+            <button id="bm-reset" class="btn-control btn-danger" style="background: var(--color-danger); border-color: transparent;">Reset Scoreboard</button>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-panel">
+          <div class="timeline-title">
+            <span>Rally Log</span>
+          </div>
+          <div id="bm-logs" class="timeline-logs">
+            <div class="log-item badminton">
+              <span>Match initialized</span>
+              <span class="time-tag">Game 1 (0-0)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       GLOBAL FLOATING QUICK CONTROLS
+       ========================================== -->
+  <!-- Floating Voice Command Toast -->
+  <div id="voice-toast" class="voice-toast"></div>
+
+  <div class="floating-actions">
+    <!-- Back to Dashboard -->
+    <button id="floating-home-btn" class="icon-btn" title="Back to Dashboard" onclick="window.appController.routeTo('home')">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+  </div>
+
+  <!-- Global Video Tutorial Modal -->
+  <div id="video-tutorial-modal" class="video-modal-overlay">
+    <div class="video-modal-container">
+      <div class="video-modal-header">
+        <h3 id="video-modal-title">Sport Rules Tutorial</h3>
+        <button id="video-modal-close" class="icon-btn" title="Close Video">
+          <svg viewBox="0 0 24 24" style="fill: currentColor; width: 1.25rem; height: 1.25rem;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="video-modal-body">
+        <div class="tutorial-video-wrapper">
+          <iframe id="video-modal-iframe" src="" title="Rules Explained" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Third Party Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+  <!-- Scripts -->
+  <script src="js/speech.js"></script>
+  <script src="js/football.js"></script>
+  <script src="js/cricket.js"></script>
+  <script src="js/basketball.js"></script>
+  <script src="js/volleyball.js"></script>
+  <script src="js/badminton.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
